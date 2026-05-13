@@ -1,0 +1,29 @@
+{
+  "_doc": "Reference-audio fingerprint for regression detection. Captured on device, compared on device. Update via the in-app benchmark screen after every model SHA bump or text-frontend change. See benchmarks/README.md for methodology.",
+  "version": "0.1.0",
+  "model": {
+    "repo": "ahk-d/supertonic-3",
+    "revision": "5024985bc861c2ae97ef9038dc2fc56f410e95be"
+  },
+  "input": {
+    "text": "Hello, world.",
+    "language": "en",
+    "voice": "F1",
+    "totalStep": 8,
+    "speed": 1.05
+  },
+  "expected": {
+    "_doc": "All values null until first device-side capture. Tolerance is intentionally loose (1%) because the diffusion loop uses RNG so exact-match is not possible.",
+    "captured_at": null,
+    "captured_device": null,
+    "sampleCount": null,
+    "durationMs": null,
+    "rmsLevel": null,
+    "peakLevel": null,
+    "tolerance": {
+      "sampleCountPct": 0.05,
+      "rmsLevelPct": 0.05,
+      "peakLevelPct": 0.05
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "react-native-speechkit-example",
+  "version": "0.1.0",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "prebuild": "expo prebuild --clean"
+  },
+  "dependencies": {
+    "expo": "~53.0.20",
+    "expo-asset": "~11.1.7",
+    "expo-constants": "~17.1.8",
+    "expo-dev-client": "~5.2.4",
+    "expo-modules-core": "~2.5.0",
+    "expo-speech": "~13.1.0",
+    "expo-status-bar": "~2.2.0",
+    "react": "19.0.0",
+    "react-native": "0.79.5",
+    "react-native-speechkit": "../"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.0",
+    "@types/react": "~19.0.10",
+    "typescript": "~5.8.3"
+  }
+}

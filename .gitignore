@@ -1,0 +1,43 @@
+node_modules/
+build/
+*.log
+.DS_Store
+.expo/
+.expo-shared/
+
+# iOS
+ios/Pods/
+ios/build/
+*.xcworkspace
+*.xcuserstate
+ios/RNSpeechKit.xcodeproj/xcuserdata/
+
+# Android
+android/build/
+android/.gradle/
+android/local.properties
+android/app/build/
+*.iml
+
+# Models (downloaded at runtime)
+ios/Resources/models/
+android/src/main/assets/models/
+example/assets/models/
+
+# Env
+.env
+.env.local
+
+# Python (tools/quantize.py + verify-quantized.py local dev)
+tools/.venv/
+tools/__pycache__/
+**/__pycache__/
+*.pyc
+
+# IDE / agent settings
+.claude/
+.idea/
+.vscode/
+
+# Internal-only docs (marketing briefs, launch plans, drafts)
+docs/

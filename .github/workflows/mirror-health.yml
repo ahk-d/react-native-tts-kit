@@ -1,0 +1,63 @@
+name: Mirror health
+
+# Verifies that both the primary mirror (ahk-d/supertonic-3) and the upstream
+# fallback (Supertone/supertonic-3) still serve the pinned commit. If either
+# 404s, fail the workflow so we get a notification before users do.
+
+on:
+  schedule:
+    # Mondays 09:00 UTC. Conservative cadence — anything more frequent is noise.
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+    # Manual trigger from the Actions tab when investigating.
+
+jobs:
+  reachability:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract pinned revisions
+        id: revs
+        run: |
+          MIRROR=$(grep -E 'mirrorRevision\s*=' \
+            ios/Supertonic/ModelLocator.swift \
+            | head -n1 | sed -E 's/.*"([0-9a-f]+)".*/\1/')
+          UPSTREAM=$(grep -E 'upstreamRevision\s*=' \
+            ios/Supertonic/ModelLocator.swift \
+            | head -n1 | sed -E 's/.*"([0-9a-f]+)".*/\1/')
+          if [[ -z "$MIRROR" || -z "$UPSTREAM" ]]; then
+            echo "Could not extract revisions from ModelLocator.swift" >&2
+            exit 1
+          fi
+          echo "mirror=$MIRROR" >>"$GITHUB_OUTPUT"
+          echo "upstream=$UPSTREAM" >>"$GITHUB_OUTPUT"
+          echo "Pinned mirror SHA:   $MIRROR"
+          echo "Pinned upstream SHA: $UPSTREAM"
+
+      - name: HEAD primary mirror manifest files
+        run: |
+          BASE="https://huggingface.co/ahk-d/supertonic-3/resolve/${{ steps.revs.outputs.mirror }}"
+          for path in onnx/tts.json onnx/unicode_indexer.json voice_styles/F1.json; do
+            url="$BASE/$path"
+            code=$(curl -sS -o /dev/null -w '%{http_code}' -L --max-time 30 -I "$url")
+            echo "[mirror] $code  $url"
+            # 200 from xet-bridge after redirect, 302 from HF resolve front
+            if [[ "$code" != "200" && "$code" != "302" ]]; then
+              echo "::error::Mirror returned $code for $url"
+              exit 1
+            fi
+          done
+
+      - name: HEAD upstream fallback manifest files
+        run: |
+          BASE="https://huggingface.co/Supertone/supertonic-3/resolve/${{ steps.revs.outputs.upstream }}"
+          for path in onnx/tts.json onnx/unicode_indexer.json voice_styles/F1.json; do
+            url="$BASE/$path"
+            code=$(curl -sS -o /dev/null -w '%{http_code}' -L --max-time 30 -I "$url")
+            echo "[upstream] $code  $url"
+            if [[ "$code" != "200" && "$code" != "302" ]]; then
+              echo "::error::Upstream returned $code for $url"
+              exit 1
+            fi
+          done

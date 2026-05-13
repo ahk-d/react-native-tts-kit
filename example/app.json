@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "SpeechKit Demo",
+    "slug": "speechkit-demo",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "bundleIdentifier": "com.ahkd.speechkitdemo",
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "audio"
+        ]
+      }
+    },
+    "android": {
+      "package": "com.ahkd.speechkitdemo"
+    },
+    "plugins": [
+      "expo-asset"
+    ]
+  }
+}

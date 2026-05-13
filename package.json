@@ -1,0 +1,71 @@
+{
+  "name": "react-native-speechkit",
+  "version": "0.1.0",
+  "description": "On-device neural TTS for React Native and Expo. Multi-engine, sub-second TTFA, 31 languages, fully offline.",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "scripts": {
+    "build": "expo-module build",
+    "clean": "expo-module clean",
+    "lint": "expo-module lint",
+    "test": "jest",
+    "prepare": "expo-module prepare",
+    "prepublishOnly": "expo-module prepublishOnly",
+    "expo-module": "expo-module"
+  },
+  "keywords": [
+    "react-native",
+    "expo",
+    "tts",
+    "text-to-speech",
+    "speech",
+    "supertonic",
+    "neural-tts",
+    "on-device",
+    "offline",
+    "voice",
+    "ai"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ahk-d/react-native-speechkit"
+  },
+  "bugs": {
+    "url": "https://github.com/ahk-d/react-native-speechkit/issues"
+  },
+  "author": "ahk-d",
+  "license": "MIT",
+  "homepage": "https://github.com/ahk-d/react-native-speechkit#readme",
+  "files": [
+    "build",
+    "src",
+    "ios",
+    "android",
+    "licenses",
+    "expo-module.config.json",
+    "RNSpeechKit.podspec",
+    "ATTRIBUTIONS.md",
+    "LICENSE",
+    "README.md"
+  ],
+  "peerDependencies": {
+    "expo": ">=51.0.0",
+    "expo-modules-core": ">=1.12.0",
+    "react": ">=18.2.0",
+    "react-native": ">=0.74.0"
+  },
+  "peerDependenciesMeta": {
+    "expo-speech": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/react": "~19.0.10",
+    "expo-module-scripts": "^4.0.0",
+    "expo-modules-core": "~2.5.0",
+    "expo-speech": "~13.1.0",
+    "react": "19.0.0",
+    "react-native": "0.79.5",
+    "typescript": "~5.8.3"
+  }
+}
