@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Pressable,
   ScrollView,
@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import SpeechKit, { Voice } from 'react-native-speechkit';
+import SpeechKit, { Voice, StreamHandle } from 'react-native-speechkit';
 import { SUPERTONIC_LANGUAGES } from 'react-native-speechkit';
 import Benchmark from './screens/Benchmark';
 
@@ -78,9 +78,11 @@ function DemoScreen({ onOpenBenchmark }: { onOpenBenchmark: () => void }) {
   const [busy, setBusy] = useState(false);
   const [phase, setPhase] = useState<Phase>('idle');
   const [ttfaMs, setTtfaMs] = useState<number | null>(null);
+  const [chunkCount, setChunkCount] = useState<number>(0);
   const [downloadPct, setDownloadPct] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const streamRef = useRef<StreamHandle | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -113,6 +115,7 @@ function DemoScreen({ onOpenBenchmark }: { onOpenBenchmark: () => void }) {
     setBusy(true);
     setError(null);
     setTtfaMs(null);
+    setChunkCount(0);
     setPhase('synthesizing');
     promise
       .catch((e: any) => {
@@ -120,6 +123,69 @@ function DemoScreen({ onOpenBenchmark }: { onOpenBenchmark: () => void }) {
         setPhase('ready');
       })
       .finally(() => setBusy(false));
+  };
+
+  // Streaming: native side plays each chunk as it's produced; JS just observes
+  // for TTFA + chunk-count UI. The first-chunk callback is the meaningful
+  // signal — that's when audio actually starts.
+  const stream = () => {
+    console.log('[stream] tapped', { busy, engine, voiceId, language, textLen: text.length });
+    if (busy) {
+      console.log('[stream] aborted: busy');
+      return;
+    }
+    if (engine !== 'supertonic') {
+      console.log('[stream] aborted: wrong engine', engine);
+      setError('Streaming requires the Supertonic engine. Tap the Engine toggle.');
+      return;
+    }
+    const startedAt = Date.now();
+    setError(null);
+    setTtfaMs(null);
+    setChunkCount(0);
+    setBusy(true);
+    setPhase('synthesizing');
+
+    let handle: StreamHandle;
+    try {
+      console.log('[stream] calling SpeechKit.stream()');
+      handle = SpeechKit.stream(text, { voice: voiceId, language, engine });
+      console.log('[stream] handle returned', { id: handle.id });
+    } catch (e: any) {
+      console.log('[stream] threw at call site:', e?.message ?? String(e));
+      setError(e?.message ?? String(e));
+      setPhase('ready');
+      setBusy(false);
+      return;
+    }
+    streamRef.current = handle;
+    let firstChunkSeen = false;
+    handle.on('chunk', (pcm) => {
+      const ms = Date.now() - startedAt;
+      if (!firstChunkSeen) {
+        firstChunkSeen = true;
+        console.log('[stream] FIRST CHUNK at', ms, 'ms · bytes=', pcm?.byteLength ?? 'n/a');
+        setTtfaMs(ms);
+        setPhase('speaking');
+      } else {
+        console.log('[stream] chunk at', ms, 'ms · bytes=', pcm?.byteLength ?? 'n/a');
+      }
+      setChunkCount((n) => n + 1);
+    });
+    handle.on('end', () => {
+      console.log('[stream] END at', Date.now() - startedAt, 'ms');
+      setPhase('ready');
+      setBusy(false);
+      streamRef.current = null;
+    });
+    handle.on('error', (e: Error) => {
+      console.log('[stream] ERROR:', e.message);
+      setError(e.message);
+      setPhase('ready');
+      setBusy(false);
+      streamRef.current = null;
+    });
+    console.log('[stream] handlers attached, awaiting events');
   };
 
   const prefetch = async () => {
@@ -140,7 +206,12 @@ function DemoScreen({ onOpenBenchmark }: { onOpenBenchmark: () => void }) {
   };
 
   const stop = async () => {
-    await SpeechKit.stop();
+    if (streamRef.current) {
+      await streamRef.current.cancel();
+      streamRef.current = null;
+    } else {
+      await SpeechKit.stop();
+    }
     setPhase('ready');
     setBusy(false);
   };
@@ -221,21 +292,49 @@ function DemoScreen({ onOpenBenchmark }: { onOpenBenchmark: () => void }) {
             </Pressable>
           ) : (
             <View style={styles.ctaRow}>
-              <Pressable
-                onPress={speaking ? stop : speak}
-                disabled={busy && !speaking}
-                style={({ pressed }) => [
-                  styles.primaryCta,
-                  styles.ctaPrimaryFlex,
-                  speaking && styles.primaryCtaSpeaking,
-                  pressed && styles.primaryCtaPressed,
-                ]}
-              >
-                <Text style={styles.primaryCtaText}>
-                  {speaking ? '■ Stop' : '▶ Speak'}
-                </Text>
-              </Pressable>
-              {engine === 'supertonic' && (
+              {speaking ? (
+                <Pressable
+                  onPress={stop}
+                  style={({ pressed }) => [
+                    styles.primaryCta,
+                    styles.ctaPrimaryFlex,
+                    styles.primaryCtaSpeaking,
+                    pressed && styles.primaryCtaPressed,
+                  ]}
+                >
+                  <Text style={styles.primaryCtaText}>■ Stop</Text>
+                </Pressable>
+              ) : (
+                <>
+                  <Pressable
+                    onPress={speak}
+                    disabled={busy}
+                    style={({ pressed }) => [
+                      styles.primaryCta,
+                      styles.ctaPrimaryFlex,
+                      pressed && styles.primaryCtaPressed,
+                    ]}
+                  >
+                    <Text style={styles.primaryCtaText}>▶ Speak</Text>
+                  </Pressable>
+                  <Pressable
+                    onPress={stream}
+                    disabled={busy || engine !== 'supertonic'}
+                    style={({ pressed }) => [
+                      styles.primaryCta,
+                      styles.ctaPrimaryFlex,
+                      styles.primaryCtaStream,
+                      (busy || engine !== 'supertonic') && styles.primaryCtaDisabled,
+                      pressed && styles.primaryCtaPressed,
+                    ]}
+                  >
+                    <Text style={styles.primaryCtaText}>
+                      {engine === 'supertonic' ? '≋ Stream' : '≋ Stream (supertonic only)'}
+                    </Text>
+                  </Pressable>
+                </>
+              )}
+              {engine === 'supertonic' && !speaking && (
                 <Pressable
                   onPress={clearCache}
                   disabled={busy}
@@ -244,12 +343,17 @@ function DemoScreen({ onOpenBenchmark }: { onOpenBenchmark: () => void }) {
                     pressed && styles.secondaryCtaPressed,
                   ]}
                 >
-                  <Text style={styles.secondaryCtaText}>Reset cache</Text>
+                  <Text style={styles.secondaryCtaText}>Reset</Text>
                 </Pressable>
               )}
             </View>
           )}
 
+          {chunkCount > 0 && (
+            <Text style={styles.chunkLine}>
+              chunks: {chunkCount}{streamRef.current ? ' · streaming' : ''}
+            </Text>
+          )}
           {error && <Text style={styles.errorText}>{error}</Text>}
         </View>
 
@@ -288,18 +392,22 @@ function DemoScreen({ onOpenBenchmark }: { onOpenBenchmark: () => void }) {
           placeholderTextColor="#5a5a60"
         />
 
-        {/* Sample shortcuts */}
+        {/* Sample shortcuts — chip stays highlighted while its text is the current input.
+            If you edit the text manually the highlight drops, which is the right cue. */}
         <Text style={styles.sectionLabel}>try a sample ({sampleEntries.length})</Text>
         <View style={styles.row}>
-          {sampleEntries.map(([k, v]) => (
-            <TouchableOpacity
-              key={k}
-              onPress={() => { setText(v.text); setLanguage(v.lang); }}
-              style={styles.chip}
-            >
-              <Text style={styles.chipText}>{k}</Text>
-            </TouchableOpacity>
-          ))}
+          {sampleEntries.map(([k, v]) => {
+            const isActive = text === v.text;
+            return (
+              <TouchableOpacity
+                key={k}
+                onPress={() => { setText(v.text); setLanguage(v.lang); }}
+                style={[styles.chip, isActive && styles.chipActive]}
+              >
+                <Text style={[styles.chipText, isActive && styles.chipTextActive]}>{k}</Text>
+              </TouchableOpacity>
+            );
+          })}
         </View>
 
         {/* Voice picker */}
@@ -433,7 +541,11 @@ const styles = StyleSheet.create({
   },
   primaryCtaPressed: { backgroundColor: theme.accentDim, transform: [{ scale: 0.98 }] },
   primaryCtaSpeaking: { backgroundColor: theme.good },
+  primaryCtaStream: { backgroundColor: theme.warn },
+  primaryCtaDisabled: { opacity: 0.4 },
   primaryCtaText: { color: '#0a0a0c', fontSize: 17, fontWeight: '700', letterSpacing: 0.3 },
+
+  chunkLine: { color: theme.textDim, fontSize: 12, marginTop: 12, fontFamily: 'Menlo' },
 
   ctaRow: { flexDirection: 'row', gap: 8 },
   ctaPrimaryFlex: { flex: 1 },

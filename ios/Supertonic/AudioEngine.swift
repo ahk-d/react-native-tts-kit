@@ -61,16 +61,25 @@ final class AudioEngine {
     }
 
     func feedStream(chunk: [Float]) {
+        // Only refuse work if we've been fully stopped — not on endStream(),
+        // which only signals "no more chunks coming." Pending buffers that are
+        // already in the async pipeline must still play out.
         guard streaming else { return }
         let sr = Int(configuredSampleRate)
         queue.async { [weak self] in
-            guard let self, self.streaming, let buffer = self.makeBuffer(from: chunk, sampleRate: sr) else { return }
+            guard let self, let buffer = self.makeBuffer(from: chunk, sampleRate: sr) else { return }
             self.player.scheduleBuffer(buffer, at: nil, options: [], completionHandler: nil)
         }
     }
 
+    /// Signals that no more chunks will be fed. Does NOT cancel pending audio —
+    /// `feedStream` may have enqueued buffers on the audio queue that haven't
+    /// scheduled yet. Those must play out so the user hears the audio they
+    /// synthesized. Use `stop()` to interrupt actual playback.
     func endStream() {
-        streaming = false
+        // Intentionally leaves `streaming = true` so any feedStream() calls
+        // still in flight from the synthesis callback complete normally.
+        // The flag is reset by `stop()` or by the next `beginStream()`.
     }
 
     func stop() {
