@@ -1,6 +1,6 @@
 {
   "name": "react-native-tts-kit",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "On-device neural TTS for React Native and Expo. Multi-engine, sub-second TTFA, 31 languages, fully offline.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
