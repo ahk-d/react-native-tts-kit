@@ -8,28 +8,28 @@
 
 /* Begin PBXBuildFile section */
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		194E4D0D7BB9DDF90396BD3C /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDCE1B6D39444630E872448 /* ExpoModulesProvider.swift */; };
+		2CF2ED07AAFF7498214D5835 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C350DA2736809445E49F07D /* ExpoModulesProvider.swift */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		48231224CD2DF97EA89E050F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = C3F01482DD661A3FFC124596 /* PrivacyInfo.xcprivacy */; };
+		4ADBB0E26CBD1C1756FD8532 /* libPods-TTSKitDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E660A582C94E83F5810BC5AA /* libPods-TTSKitDemo.a */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		C946B272B3CCCB58580A19CB /* libPods-SpeechKitDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3787303C5E841A671F096337 /* libPods-SpeechKitDemo.a */; };
+		D1B146353220B88E583B033D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D9DA8A7CC404BB9EA9D65590 /* PrivacyInfo.xcprivacy */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		13B07F961A680F5B00A75B9A /* SpeechKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeechKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = SpeechKitDemo/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = SpeechKitDemo/Info.plist; sourceTree = "<group>"; };
-		3787303C5E841A671F096337 /* libPods-SpeechKitDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SpeechKitDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6503C25BBB067A3AEEFB2010 /* Pods-SpeechKitDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpeechKitDemo.debug.xcconfig"; path = "Target Support Files/Pods-SpeechKitDemo/Pods-SpeechKitDemo.debug.xcconfig"; sourceTree = "<group>"; };
-		8BDCE1B6D39444630E872448 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-SpeechKitDemo/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = SpeechKitDemo/SplashScreen.storyboard; sourceTree = "<group>"; };
+		0B0999416A2AB60A2546C1F8 /* Pods-TTSKitDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TTSKitDemo.release.xcconfig"; path = "Target Support Files/Pods-TTSKitDemo/Pods-TTSKitDemo.release.xcconfig"; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* TTSKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TTSKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TTSKitDemo/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = TTSKitDemo/Info.plist; sourceTree = "<group>"; };
+		8C350DA2736809445E49F07D /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-TTSKitDemo/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = TTSKitDemo/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
-		C3F01482DD661A3FFC124596 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = SpeechKitDemo/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		C8656CEDE273F5C5C7621B6E /* Pods-SpeechKitDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpeechKitDemo.release.xcconfig"; path = "Target Support Files/Pods-SpeechKitDemo/Pods-SpeechKitDemo.release.xcconfig"; sourceTree = "<group>"; };
+		D9DA8A7CC404BB9EA9D65590 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = TTSKitDemo/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		E660A582C94E83F5810BC5AA /* libPods-TTSKitDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TTSKitDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = SpeechKitDemo/AppDelegate.swift; sourceTree = "<group>"; };
-		F11748442D0722820044C1D9 /* SpeechKitDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "SpeechKitDemo-Bridging-Header.h"; path = "SpeechKitDemo/SpeechKitDemo-Bridging-Header.h"; sourceTree = "<group>"; };
+		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = TTSKitDemo/AppDelegate.swift; sourceTree = "<group>"; };
+		F11748442D0722820044C1D9 /* TTSKitDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "TTSKitDemo-Bridging-Header.h"; path = "TTSKitDemo/TTSKitDemo-Bridging-Header.h"; sourceTree = "<group>"; };
+		F8F6D0D9C6271EC47FE9B3D9 /* Pods-TTSKitDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TTSKitDemo.debug.xcconfig"; path = "Target Support Files/Pods-TTSKitDemo/Pods-TTSKitDemo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,34 +37,42 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C946B272B3CCCB58580A19CB /* libPods-SpeechKitDemo.a in Frameworks */,
+				4ADBB0E26CBD1C1756FD8532 /* libPods-TTSKitDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		13B07FAE1A68108700A75B9A /* SpeechKitDemo */ = {
+		13B07FAE1A68108700A75B9A /* TTSKitDemo */ = {
 			isa = PBXGroup;
 			children = (
 				F11748412D0307B40044C1D9 /* AppDelegate.swift */,
-				F11748442D0722820044C1D9 /* SpeechKitDemo-Bridging-Header.h */,
+				F11748442D0722820044C1D9 /* TTSKitDemo-Bridging-Header.h */,
 				BB2F792B24A3F905000567C9 /* Supporting */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				C3F01482DD661A3FFC124596 /* PrivacyInfo.xcprivacy */,
+				D9DA8A7CC404BB9EA9D65590 /* PrivacyInfo.xcprivacy */,
 			);
-			name = SpeechKitDemo;
+			name = TTSKitDemo;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				3787303C5E841A671F096337 /* libPods-SpeechKitDemo.a */,
+				E660A582C94E83F5810BC5AA /* libPods-TTSKitDemo.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		42F78520AD76E7EBD966B122 /* ExpoModulesProviders */ = {
+			isa = PBXGroup;
+			children = (
+				DDCFA326072707FE9B273F3D /* TTSKitDemo */,
+			);
+			name = ExpoModulesProviders;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -77,12 +85,12 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* SpeechKitDemo */,
+				13B07FAE1A68108700A75B9A /* TTSKitDemo */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				DBEB423BDBEB9FDFACC037C1 /* Pods */,
-				A11BE3B3EF1F801E43CD41B1 /* ExpoModulesProviders */,
+				FE69F6D15640A0DE9FF05FEA /* Pods */,
+				42F78520AD76E7EBD966B122 /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -92,17 +100,9 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* SpeechKitDemo.app */,
+				13B07F961A680F5B00A75B9A /* TTSKitDemo.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		A11BE3B3EF1F801E43CD41B1 /* ExpoModulesProviders */ = {
-			isa = PBXGroup;
-			children = (
-				DA34D77284D672654DC9AECB /* SpeechKitDemo */,
-			);
-			name = ExpoModulesProviders;
 			sourceTree = "<group>";
 		};
 		BB2F792B24A3F905000567C9 /* Supporting */ = {
@@ -111,22 +111,22 @@
 				BB2F792C24A3F905000567C9 /* Expo.plist */,
 			);
 			name = Supporting;
-			path = SpeechKitDemo/Supporting;
+			path = TTSKitDemo/Supporting;
 			sourceTree = "<group>";
 		};
-		DA34D77284D672654DC9AECB /* SpeechKitDemo */ = {
+		DDCFA326072707FE9B273F3D /* TTSKitDemo */ = {
 			isa = PBXGroup;
 			children = (
-				8BDCE1B6D39444630E872448 /* ExpoModulesProvider.swift */,
+				8C350DA2736809445E49F07D /* ExpoModulesProvider.swift */,
 			);
-			name = SpeechKitDemo;
+			name = TTSKitDemo;
 			sourceTree = "<group>";
 		};
-		DBEB423BDBEB9FDFACC037C1 /* Pods */ = {
+		FE69F6D15640A0DE9FF05FEA /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				6503C25BBB067A3AEEFB2010 /* Pods-SpeechKitDemo.debug.xcconfig */,
-				C8656CEDE273F5C5C7621B6E /* Pods-SpeechKitDemo.release.xcconfig */,
+				F8F6D0D9C6271EC47FE9B3D9 /* Pods-TTSKitDemo.debug.xcconfig */,
+				0B0999416A2AB60A2546C1F8 /* Pods-TTSKitDemo.release.xcconfig */,
 			);
 			name = Pods;
 			path = Pods;
@@ -135,26 +135,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		13B07F861A680F5B00A75B9A /* SpeechKitDemo */ = {
+		13B07F861A680F5B00A75B9A /* TTSKitDemo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "SpeechKitDemo" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "TTSKitDemo" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				6A94E58C86D3DBA2C7F381C6 /* [Expo] Configure project */,
+				A3656A26B928119A47EF8D4A /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				90E291DF36AA4A8BF5A32A16 /* [CP] Embed Pods Frameworks */,
+				ED536AC6E57921E9236320B8 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = SpeechKitDemo;
-			productName = SpeechKitDemo;
-			productReference = 13B07F961A680F5B00A75B9A /* SpeechKitDemo.app */;
+			name = TTSKitDemo;
+			productName = TTSKitDemo;
+			productReference = 13B07F961A680F5B00A75B9A /* TTSKitDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -166,13 +166,13 @@
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = NUX5L99BLV;
 						LastSwiftMigration = 1250;
+						DevelopmentTeam = "NUX5L99BLV";
 						ProvisioningStyle = Automatic;
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "SpeechKitDemo" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "TTSKitDemo" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -185,7 +185,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* SpeechKitDemo */,
+				13B07F861A680F5B00A75B9A /* TTSKitDemo */,
 			);
 		};
 /* End PBXProject section */
@@ -198,7 +198,7 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				48231224CD2DF97EA89E050F /* PrivacyInfo.xcprivacy in Resources */,
+				D1B146353220B88E583B033D /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,31 +235,12 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-SpeechKitDemo-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-TTSKitDemo-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
-		};
-		6A94E58C86D3DBA2C7F381C6 /* [Expo] Configure project */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "[Expo] Configure project";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-SpeechKitDemo/expo-configure-project.sh\"\n";
 		};
 		800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -267,7 +248,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SpeechKitDemo/Pods-SpeechKitDemo-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-TTSKitDemo/Pods-TTSKitDemo-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/EXConstants.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/ExpoConstants_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/RCT-Folly/RCT-Folly_privacy.bundle",
@@ -292,16 +273,35 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SpeechKitDemo/Pods-SpeechKitDemo-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TTSKitDemo/Pods-TTSKitDemo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		90E291DF36AA4A8BF5A32A16 /* [CP] Embed Pods Frameworks */ = {
+		A3656A26B928119A47EF8D4A /* [Expo] Configure project */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-TTSKitDemo/expo-configure-project.sh\"\n";
+		};
+		ED536AC6E57921E9236320B8 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SpeechKitDemo/Pods-SpeechKitDemo-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-TTSKitDemo/Pods-TTSKitDemo-frameworks.sh",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -310,7 +310,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SpeechKitDemo/Pods-SpeechKitDemo-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TTSKitDemo/Pods-TTSKitDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -321,7 +321,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
-				194E4D0D7BB9DDF90396BD3C /* ExpoModulesProvider.swift in Sources */,
+				2CF2ED07AAFF7498214D5835 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,21 +330,18 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6503C25BBB067A3AEEFB2010 /* Pods-SpeechKitDemo.debug.xcconfig */;
+			baseConfigurationReference = F8F6D0D9C6271EC47FE9B3D9 /* Pods-TTSKitDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = SpeechKitDemo/SpeechKitDemo.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ENTITLEMENTS = TTSKitDemo/TTSKitDemo.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = NUX5L99BLV;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"FB_SONARKIT_ENABLED=1",
 				);
-				INFOPLIST_FILE = SpeechKitDemo/Info.plist;
+				INFOPLIST_FILE = TTSKitDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -357,28 +354,28 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ahkd.speechkitdemo;
-				PRODUCT_NAME = SpeechKitDemo;
-				SWIFT_OBJC_BRIDGING_HEADER = "SpeechKitDemo/SpeechKitDemo-Bridging-Header.h";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ahkd.ttskitdemo;
+				PRODUCT_NAME = TTSKitDemo;
+				SWIFT_OBJC_BRIDGING_HEADER = "TTSKitDemo/TTSKitDemo-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
+				DEVELOPMENT_TEAM = "NUX5L99BLV";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 			};
 			name = Debug;
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C8656CEDE273F5C5C7621B6E /* Pods-SpeechKitDemo.release.xcconfig */;
+			baseConfigurationReference = 0B0999416A2AB60A2546C1F8 /* Pods-TTSKitDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = SpeechKitDemo/SpeechKitDemo.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ENTITLEMENTS = TTSKitDemo/TTSKitDemo.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = NUX5L99BLV;
-				INFOPLIST_FILE = SpeechKitDemo/Info.plist;
+				INFOPLIST_FILE = TTSKitDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -391,12 +388,15 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ahkd.speechkitdemo;
-				PRODUCT_NAME = SpeechKitDemo;
-				SWIFT_OBJC_BRIDGING_HEADER = "SpeechKitDemo/SpeechKitDemo-Bridging-Header.h";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ahkd.ttskitdemo;
+				PRODUCT_NAME = TTSKitDemo;
+				SWIFT_OBJC_BRIDGING_HEADER = "TTSKitDemo/TTSKitDemo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
+				DEVELOPMENT_TEAM = "NUX5L99BLV";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 			};
 			name = Release;
 		};
@@ -527,7 +527,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "SpeechKitDemo" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "TTSKitDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -536,7 +536,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "SpeechKitDemo" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "TTSKitDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

@@ -87,9 +87,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.ahkd.speechkitdemo'
+    namespace 'com.ahkd.ttskitdemo'
     defaultConfig {
-        applicationId 'com.ahkd.speechkitdemo'
+        applicationId 'com.ahkd.ttskitdemo'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

@@ -1,12 +1,12 @@
 import ExpoModulesCore
 
-public class RNSpeechKitModule: Module {
+public class RNTTSKitModule: Module {
     private var session: SupertonicSession?
     private let audioEngine = AudioEngine()
     private var prefetchTask: Task<Void, Error>?
 
     public func definition() -> ModuleDefinition {
-        Name("RNSpeechKit")
+        Name("RNTTSKit")
 
         Events(
             "onPrefetchProgress",

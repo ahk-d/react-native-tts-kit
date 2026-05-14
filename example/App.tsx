@@ -9,13 +9,13 @@ import {
   View,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import SpeechKit, { Voice, StreamHandle } from 'react-native-speechkit';
-import { SUPERTONIC_LANGUAGES } from 'react-native-speechkit';
+import TTSKit, { Voice, StreamHandle } from 'react-native-tts-kit';
+import { SUPERTONIC_LANGUAGES } from 'react-native-tts-kit';
 import Benchmark from './screens/Benchmark';
 
 // One sample per supported language. Tap a chip to load it as the input.
 const SAMPLE_TEXTS: Record<string, { lang: string; text: string }> = {
-  english:    { lang: 'en', text: 'Hello from React Native SpeechKit. This runs fully on-device.' },
+  english:    { lang: 'en', text: 'Hello from React Native TTSKit. This runs fully on-device.' },
   paragraph:  { lang: 'en', text: 'In airplane mode, on a phone, with no cloud at all. The voice you are hearing was synthesized by a 99-million-parameter model running locally on your CPU.' },
   arabic:     { lang: 'ar', text: 'مرحباً. هذا يعمل بالكامل على هاتفك بدون إنترنت.' },
   bulgarian:  { lang: 'bg', text: 'Здравейте. Това работи изцяло на вашия телефон без интернет.' },
@@ -23,7 +23,7 @@ const SAMPLE_TEXTS: Record<string, { lang: string; text: string }> = {
   danish:     { lang: 'da', text: 'Hej. Det her kører helt på din telefon, uden internet.' },
   german:     { lang: 'de', text: 'Hallo. Das läuft vollständig auf deinem Gerät, ohne Internet.' },
   greek:      { lang: 'el', text: 'Γεια. Αυτό τρέχει πλήρως στο τηλέφωνό σας, χωρίς internet.' },
-  spanish:    { lang: 'es', text: 'Hola desde React Native SpeechKit. Esto se ejecuta completamente en el dispositivo.' },
+  spanish:    { lang: 'es', text: 'Hola desde React Native TTSKit. Esto se ejecuta completamente en el dispositivo.' },
   estonian:   { lang: 'et', text: 'Tere. See töötab täielikult teie telefonis, ilma internetita.' },
   finnish:    { lang: 'fi', text: 'Hei. Tämä toimii kokonaan puhelimessasi, ilman internetiä.' },
   french:     { lang: 'fr', text: 'Bonjour. Ceci tourne entièrement sur votre téléphone, sans connexion Internet.' },
@@ -87,9 +87,9 @@ function DemoScreen({ onOpenBenchmark }: { onOpenBenchmark: () => void }) {
   useEffect(() => {
     (async () => {
       try {
-        const v = await SpeechKit.getVoices();
+        const v = await TTSKit.getVoices();
         setVoices(v);
-        const ok = await SpeechKit.isAvailable();
+        const ok = await TTSKit.isAvailable();
         setPhase(ok ? 'ready' : 'needs-prefetch');
       } catch (e: any) {
         setError(e?.message ?? String(e));
@@ -102,7 +102,7 @@ function DemoScreen({ onOpenBenchmark }: { onOpenBenchmark: () => void }) {
   const speak = () => {
     if (busy) return;
     const startedAt = Date.now();
-    const promise = SpeechKit.speak(text, {
+    const promise = TTSKit.speak(text, {
       voice: voiceId,
       language,
       engine,
@@ -148,8 +148,8 @@ function DemoScreen({ onOpenBenchmark }: { onOpenBenchmark: () => void }) {
 
     let handle: StreamHandle;
     try {
-      console.log('[stream] calling SpeechKit.stream()');
-      handle = SpeechKit.stream(text, { voice: voiceId, language, engine });
+      console.log('[stream] calling TTSKit.stream()');
+      handle = TTSKit.stream(text, { voice: voiceId, language, engine });
       console.log('[stream] handle returned', { id: handle.id });
     } catch (e: any) {
       console.log('[stream] threw at call site:', e?.message ?? String(e));
@@ -194,7 +194,7 @@ function DemoScreen({ onOpenBenchmark }: { onOpenBenchmark: () => void }) {
     setPhase('downloading');
     setDownloadPct(0);
     try {
-      await SpeechKit.prefetchModel((p) => setDownloadPct(p.percent));
+      await TTSKit.prefetchModel((p) => setDownloadPct(p.percent));
       setPhase('ready');
     } catch (e: any) {
       setError(e?.message ?? String(e));
@@ -210,7 +210,7 @@ function DemoScreen({ onOpenBenchmark }: { onOpenBenchmark: () => void }) {
       await streamRef.current.cancel();
       streamRef.current = null;
     } else {
-      await SpeechKit.stop();
+      await TTSKit.stop();
     }
     setPhase('ready');
     setBusy(false);
@@ -220,7 +220,7 @@ function DemoScreen({ onOpenBenchmark }: { onOpenBenchmark: () => void }) {
     setBusy(true);
     setError(null);
     try {
-      await SpeechKit.clearCache();
+      await TTSKit.clearCache();
       setPhase('needs-prefetch');
       setTtfaMs(null);
     } catch (e: any) {
@@ -242,7 +242,7 @@ function DemoScreen({ onOpenBenchmark }: { onOpenBenchmark: () => void }) {
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         {/* Brand */}
         <View style={styles.brand}>
-          <Text style={styles.brandLabel}>react-native-speechkit</Text>
+          <Text style={styles.brandLabel}>react-native-tts-kit</Text>
           <Text style={styles.brandTagline}>Neural TTS · on-device · 31 languages</Text>
         </View>
 

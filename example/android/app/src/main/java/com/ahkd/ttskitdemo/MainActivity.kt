@@ -1,4 +1,4 @@
-package com.ahkd.speechkitdemo
+package com.ahkd.ttskitdemo
 
 import android.os.Build
 import android.os.Bundle

@@ -1,4 +1,4 @@
-package expo.modules.speechkit.supertonic
+package expo.modules.ttskit.supertonic
 
 import android.content.Context
 import java.io.File
@@ -117,7 +117,7 @@ object ModelLocator {
   )
 
   private fun supportDir(ctx: Context): File =
-    File(ctx.filesDir, "RNSpeechKit/Supertonic").apply {
+    File(ctx.filesDir, "RNTTSKit/Supertonic").apply {
       mkdirs(); File(this, PRECISION.onnxSubdir).mkdirs(); File(this, "voice_styles").mkdirs()
     }
 
@@ -158,13 +158,13 @@ object ModelLocator {
   }
 
   /**
-   * Wipe every downloaded file under filesDir/RNSpeechKit/Supertonic (all
+   * Wipe every downloaded file under filesDir/RNTTSKit/Supertonic (all
    * precision subdirs + voice_styles). Pre-bundled files in app assets are
    * NOT touched — they're read-only and don't live here. Next call to
    * `ensureModel()` will re-download from the mirror.
    */
   fun clearCache(ctx: Context) {
-    val dir = File(ctx.filesDir, "RNSpeechKit/Supertonic")
+    val dir = File(ctx.filesDir, "RNTTSKit/Supertonic")
     val ok = dir.deleteRecursively()
     if (ok) {
       android.util.Log.i("ST.locator", "cleared cache at ${dir.absolutePath}")

@@ -1,4 +1,4 @@
-package expo.modules.speechkit.supertonic
+package expo.modules.ttskit.supertonic
 
 import ai.onnxruntime.OnnxTensor
 import ai.onnxruntime.OrtEnvironment

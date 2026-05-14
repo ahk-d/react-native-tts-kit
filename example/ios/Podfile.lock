@@ -1957,7 +1957,7 @@ PODS:
     - React-logger (= 0.79.5)
     - React-perflogger (= 0.79.5)
     - React-utils (= 0.79.5)
-  - RNSpeechKit (0.1.0):
+  - RNTTSKit (0.1.0):
     - ExpoModulesCore
     - onnxruntime-objc (~> 1.18.0)
   - SocketRocket (0.7.1)
@@ -2047,7 +2047,7 @@ DEPENDENCIES:
   - ReactAppDependencyProvider (from `build/generated/ios`)
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
-  - RNSpeechKit (from `../../ios`)
+  - RNTTSKit (from `../../ios`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -2220,7 +2220,7 @@ EXTERNAL SOURCES:
     :path: build/generated/ios
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
-  RNSpeechKit:
+  RNTTSKit:
     :path: "../../ios"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
@@ -2309,10 +2309,10 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: c42e7abdd2228ae583bdabc3dcd8e5cda6bef944
   ReactCodegen: 4d001cd4fa72b876bbff500bbb3811e458bb3c72
   ReactCommon: 41137f7e87cf7fd1c041a7124dfa3d0d48aa43f3
-  RNSpeechKit: bab6406cb2e02b50a49735a6d9b5b0b67412907a
+  RNTTSKit: 8b264e06064d16a92e7f1053f5f0615ffc0efdc1
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: adb397651e1c00672c12e9495babca70777e411e
 
-PODFILE CHECKSUM: f8b5069a176394f54a165ef53f095992886160ac
+PODFILE CHECKSUM: 13a6e9980cb6080cc3dafa51c7541d67d2e3a062
 
 COCOAPODS: 1.15.2

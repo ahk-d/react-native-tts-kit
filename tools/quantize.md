@@ -55,7 +55,7 @@ If both gates pass, upload `onnx-fp16/` to `ahk-d/supertonic-3`, note the new
 commit SHA, then:
 
 1. Paste the SHA into `mirrorRevision` in [ios/Supertonic/ModelLocator.swift](../ios/Supertonic/ModelLocator.swift)
-   and `MIRROR_REVISION` in [android/.../ModelLocator.kt](../android/src/main/java/expo/modules/speechkit/supertonic/ModelLocator.kt).
+   and `MIRROR_REVISION` in [android/.../ModelLocator.kt](../android/src/main/java/expo/modules/ttskit/supertonic/ModelLocator.kt).
 2. Paste the 4 fp16 SHA-256 fingerprints into `expectedHashes` / `EXPECTED_HASHES`.
 3. Confirm `precision = .fp16` / `PRECISION = FP16` is set in both locators.
 

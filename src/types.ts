@@ -83,7 +83,7 @@ export interface EngineCapabilities {
   languages: string[];
 }
 
-export interface SpeechKitError extends Error {
+export interface TTSKitError extends Error {
   code:
     | 'ENGINE_NOT_AVAILABLE'
     | 'VOICE_NOT_FOUND'

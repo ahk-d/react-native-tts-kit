@@ -1,7 +1,7 @@
 // Metro config for the example app.
 //
-// The example consumes the local `react-native-speechkit` package via a
-// symlink (`example/node_modules/react-native-speechkit` -> `../..`).
+// The example consumes the local `react-native-ttskit` package via a
+// symlink (`example/node_modules/react-native-ttskit` -> `../..`).
 //
 // Metro needs to be told to:
 //   1. Watch the parent so edits to ../src/* hot-reload.
@@ -38,7 +38,7 @@ config.resolver.extraNodeModules = {
 };
 
 // Block the parent package's `node_modules` — but NOT
-// `example/node_modules/react-native-speechkit/` (which is the symlink we want).
+// `example/node_modules/react-native-ttskit/` (which is the symlink we want).
 config.resolver.blockList = [
   // Match `<packageRoot>/node_modules/...` literally, not the symlink target.
   new RegExp(`^${packageRoot.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')}/node_modules/.*$`),

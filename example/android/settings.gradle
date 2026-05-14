@@ -31,7 +31,7 @@ extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
 }
 expoAutolinking.useExpoModules()
 
-rootProject.name = 'SpeechKit Demo'
+rootProject.name = 'TTSKit Demo'
 
 expoAutolinking.useExpoVersionCatalog()
 

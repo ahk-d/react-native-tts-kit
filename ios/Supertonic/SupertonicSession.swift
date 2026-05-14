@@ -10,7 +10,7 @@ enum SupertonicError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .modelMissing: return "Supertonic asset bundle is missing. Call SpeechKit.prefetchModel() first."
+        case .modelMissing: return "Supertonic asset bundle is missing. Call TTSKit.prefetchModel() first."
         case .voiceMissing(let id): return "Voice \(id) is not available."
         case .textTooLong: return "Input text exceeds the maximum length."
         case .cancelled: return "Synthesis cancelled."

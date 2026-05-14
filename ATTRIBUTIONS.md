@@ -1,6 +1,6 @@
 # Attributions
 
-`react-native-speechkit` ships and depends on the following components.
+`react-native-tts-kit` ships and depends on the following components.
 
 ---
 
@@ -52,7 +52,7 @@ Per OpenRAIL-M Section III §4:
 ## Source-code reference — Supertone/supertonic GitHub
 
 We **do not vendor** Supertone's code. Our iOS Swift inference and Android
-Kotlin port ([`ios/Supertonic/`](./ios/Supertonic/), [`android/.../supertonic/`](./android/src/main/java/expo/modules/speechkit/supertonic/))
+Kotlin port ([`ios/Supertonic/`](./ios/Supertonic/), [`android/.../supertonic/`](./android/src/main/java/expo/modules/ttskit/supertonic/))
 were written from scratch using the upstream Python and Swift references as a
 specification:
 

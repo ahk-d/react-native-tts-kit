@@ -25,7 +25,7 @@ struct PrefetchProgressInfo {
 ///     M1.json  M2.json … F5.json  (~290 KB each, 10 voices)
 /// Grand total: ~401 MB on the wire (~382 MiB).
 ///
-/// We mirror that layout under Application Support/RNSpeechKit/Supertonic/.
+/// We mirror that layout under Application Support/RNTTSKit/Supertonic/.
 /// Pinning to a specific commit SHA so model updates can't silently break us.
 enum ModelLocator {
     /// Weight precision tier. fp16 is a smaller download but only lives on
@@ -157,7 +157,7 @@ enum ModelLocator {
 
     static var supportDirectory: URL {
         let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-        let dir = base.appendingPathComponent("RNSpeechKit/Supertonic", isDirectory: true)
+        let dir = base.appendingPathComponent("RNTTSKit/Supertonic", isDirectory: true)
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         try? FileManager.default.createDirectory(at: dir.appendingPathComponent(precision.onnxSubdir), withIntermediateDirectories: true)
         try? FileManager.default.createDirectory(at: dir.appendingPathComponent("voice_styles"), withIntermediateDirectories: true)
@@ -192,7 +192,7 @@ enum ModelLocator {
         return voicesDirectory.appendingPathComponent("\(voiceId).json")
     }
 
-    /// Wipe every downloaded file under Application Support/RNSpeechKit/Supertonic
+    /// Wipe every downloaded file under Application Support/RNTTSKit/Supertonic
     /// (all precision subdirs + voice_styles). Pre-bundled files in the app
     /// resource bundle are NOT touched — they're read-only and don't live here.
     /// Next call to `ensureModel()` will re-download from the mirror.
@@ -337,7 +337,7 @@ enum ModelLocator {
                     // Hash mismatch — delete and try next mirror.
                     try? FileManager.default.removeItem(at: destination)
                     lastError = NSError(
-                        domain: "speechkit.modellocator", code: -2,
+                        domain: "ttskit.modellocator", code: -2,
                         userInfo: [NSLocalizedDescriptionKey:
                             "Downloaded \(relativePath) failed SHA-256 check (mirror may be compromised or stale)."]
                     )

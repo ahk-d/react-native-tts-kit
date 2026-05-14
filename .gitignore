@@ -10,7 +10,7 @@ ios/Pods/
 ios/build/
 *.xcworkspace
 *.xcuserstate
-ios/RNSpeechKit.xcodeproj/xcuserdata/
+ios/RNTTSKit.xcodeproj/xcuserdata/
 
 # Android
 android/build/

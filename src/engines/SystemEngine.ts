@@ -58,7 +58,7 @@ export class SystemEngine implements Engine {
   speak(text: string, options: SpeakOptions = {}): Promise<void> {
     const speech = loadExpoSpeech();
     if (!speech) {
-      throw new Error('[speechkit] expo-speech is not installed');
+      throw new Error('[ttskit] expo-speech is not installed');
     }
     return new Promise((resolve, reject) => {
       try {
@@ -86,7 +86,7 @@ export class SystemEngine implements Engine {
   }
 
   stream(_text: string, _options: SpeakOptions = {}): StreamHandle {
-    throw new Error('[speechkit] System engine does not support streaming. Use engine: "supertonic".');
+    throw new Error('[ttskit] System engine does not support streaming. Use engine: "supertonic".');
   }
 
   async stop(): Promise<void> {

@@ -18,7 +18,7 @@ Native sources of truth:
 
 - iOS: [`ios/Supertonic/`](ios/Supertonic/) — Swift port of the upstream
   reference at `supertone-inc/supertonic/swift/Sources/Helper.swift`.
-- Android: [`android/src/main/java/expo/modules/speechkit/supertonic/`](android/src/main/java/expo/modules/speechkit/supertonic/) —
+- Android: [`android/src/main/java/expo/modules/ttskit/supertonic/`](android/src/main/java/expo/modules/ttskit/supertonic/) —
   Kotlin port of the same upstream.
 
 Public TS API: [`src/`](src/). The native side is event-driven through
@@ -36,7 +36,7 @@ The package fetches from two sources, in order:
 1. **Primary (mirror):** [`ahk-d/supertonic-3`](https://huggingface.co/ahk-d/supertonic-3) — a byte-identical copy we control.
 2. **Fallback (upstream):** [`Supertone/supertonic-3`](https://huggingface.co/Supertone/supertonic-3) — the official source.
 
-Both are pinned to specific commit SHAs in [`ios/Supertonic/ModelLocator.swift`](ios/Supertonic/ModelLocator.swift) and [`android/.../ModelLocator.kt`](android/src/main/java/expo/modules/speechkit/supertonic/ModelLocator.kt). Pinning means an upstream push can never silently change behavior; mirror means an upstream delete can't break installed apps.
+Both are pinned to specific commit SHAs in [`ios/Supertonic/ModelLocator.swift`](ios/Supertonic/ModelLocator.swift) and [`android/.../ModelLocator.kt`](android/src/main/java/expo/modules/ttskit/supertonic/ModelLocator.kt). Pinning means an upstream push can never silently change behavior; mirror means an upstream delete can't break installed apps.
 
 ### Updating the mirror to a new upstream release
 
@@ -55,8 +55,8 @@ If a new release modifies the ONNX graph or text frontend:
 
 1. Clone upstream at the new SHA: `git clone --branch <sha> https://github.com/supertone-inc/supertonic.git`
 2. Diff `py/helper.py` and `swift/Sources/Helper.swift` against the previous version.
-3. Replicate any text-preprocessing changes in [`TextFrontend.swift`](ios/Supertonic/TextFrontend.swift) and [`TextFrontend.kt`](android/src/main/java/expo/modules/speechkit/supertonic/TextFrontend.kt).
-4. Replicate any ONNX I/O changes in [`SupertonicSession.swift`](ios/Supertonic/SupertonicSession.swift) and [`SupertonicSession.kt`](android/src/main/java/expo/modules/speechkit/supertonic/SupertonicSession.kt).
+3. Replicate any text-preprocessing changes in [`TextFrontend.swift`](ios/Supertonic/TextFrontend.swift) and [`TextFrontend.kt`](android/src/main/java/expo/modules/ttskit/supertonic/TextFrontend.kt).
+4. Replicate any ONNX I/O changes in [`SupertonicSession.swift`](ios/Supertonic/SupertonicSession.swift) and [`SupertonicSession.kt`](android/src/main/java/expo/modules/ttskit/supertonic/SupertonicSession.kt).
 
 ## Local development
 
@@ -105,5 +105,5 @@ Both run automatically in `pod install`. If you wipe the Pods directory you need
 The multi-engine abstraction is the package's moat. To add an engine:
 
 1. Implement [`src/engines/Engine.ts`](src/engines/Engine.ts) — the interface.
-2. Register it in [`src/index.ts`](src/index.ts) (or have the user call `SpeechKit.registerEngine(...)` for opt-in engines that pull heavy native deps).
+2. Register it in [`src/index.ts`](src/index.ts) (or have the user call `TTSKit.registerEngine(...)` for opt-in engines that pull heavy native deps).
 3. Keep the public API stable — no engine should leak its capabilities into the call sites of `speak()` / `stream()`.

@@ -13,7 +13,7 @@ final class AudioEngine {
     private var configuredSampleRate: Double = 0
     private var attached = false
     private var streaming = false
-    private let queue = DispatchQueue(label: "speechkit.audioengine", qos: .userInitiated)
+    private let queue = DispatchQueue(label: "ttskit.audioengine", qos: .userInitiated)
 
     /// Configure (or reconfigure) the player for the given sample rate.
     private func ensureAttached(sampleRate: Int) throws {

@@ -1,20 +1,20 @@
-# react-native-speechkit
+# react-native-tts-kit
 
 <p align="center">
-  <img src="docs/thumbnail.png" alt="react-native-speechkit — Neural TTS for React Native · On-device · 31 languages" width="1024">
+  <img src="docs/thumbnail.png" alt="react-native-tts-kit — Neural TTS for React Native · On-device · 31 languages" width="1024">
 </p>
 
 **Neural text-to-speech for React Native and Expo. On-device. Sub-100ms. 31 languages.**
 
 ```ts
-import SpeechKit from 'react-native-speechkit';
+import TTSKit from 'react-native-tts-kit';
 
-await SpeechKit.speak('Hello, world.');
+await TTSKit.speak('Hello, world.');
 ```
 
 No API keys. No network. No robotic system voice.
 
-> **Status:** v0.1 alpha. iOS verified on iPhone (iOS 26+). Android scaffolded but not yet validated on a real device. Feedback via [GitHub issues](https://github.com/ahk-d/react-native-speechkit/issues).
+> **Status:** v0.1 alpha. iOS verified on iPhone (iOS 26+). Android scaffolded but not yet validated on a real device. Feedback via [GitHub issues](https://github.com/ahk-d/react-native-tts-kit/issues).
 
 ---
 
@@ -24,7 +24,7 @@ No API keys. No network. No robotic system voice.
 |---|---|---|---|---|
 | `expo-speech` (system) | robotic | ✅ | free | OS-bound |
 | ElevenLabs / OpenAI TTS | excellent | ❌ | per-request | 30+ |
-| **`react-native-speechkit`** | **neural** | **✅** | **free** | **31** |
+| **`react-native-tts-kit`** | **neural** | **✅** | **free** | **31** |
 
 There was no good answer for on-device neural TTS in React Native. We needed it for [Flowent](https://getflowent.com), so we built it and open-sourced it.
 
@@ -33,7 +33,7 @@ There was no good answer for on-device neural TTS in React Native. We needed it 
 ## Install
 
 ```bash
-npx expo install react-native-speechkit
+npx expo install react-native-tts-kit
 npx expo prebuild --platform ios
 cd ios && pod install && cd ..
 npx expo run:ios --device
@@ -48,23 +48,23 @@ Bare RN: same flow, just install `expo-modules-core` as a peer dep.
 ## Use
 
 ```ts
-import SpeechKit from 'react-native-speechkit';
+import TTSKit from 'react-native-tts-kit';
 
 // Default: F1 voice, English
-await SpeechKit.speak('Hello, world.');
+await TTSKit.speak('Hello, world.');
 
 // Pair any voice with any of 31 languages
-await SpeechKit.speak('Bonjour le monde',  { voice: 'F1', language: 'fr' });
-await SpeechKit.speak('こんにちは',          { voice: 'M2', language: 'ja' });
-await SpeechKit.speak('안녕하세요',          { voice: 'F3', language: 'ko' });
+await TTSKit.speak('Bonjour le monde',  { voice: 'F1', language: 'fr' });
+await TTSKit.speak('こんにちは',          { voice: 'M2', language: 'ja' });
+await TTSKit.speak('안녕하세요',          { voice: 'F3', language: 'ko' });
 
 // Stream long text — first audio arrives before synthesis finishes
-const stream = SpeechKit.stream(longArticle, { language: 'en' });
+const stream = TTSKit.stream(longArticle, { language: 'en' });
 stream.on('chunk', (pcm) => { /* PCM16LE @ 44.1 kHz */ });
 stream.on('end',   () => {});
 
 // Stop in-flight synthesis
-await SpeechKit.stop();
+await TTSKit.stop();
 ```
 
 ### First-launch UX
@@ -72,7 +72,7 @@ await SpeechKit.stop();
 The model is ~210 MB (multilingual split — 31 languages, fp16 weights) and downloads on first use. Call `prefetchModel()` from a settings screen so users aren't surprised mid-conversation:
 
 ```ts
-await SpeechKit.prefetchModel((p) => {
+await TTSKit.prefetchModel((p) => {
   setProgress(p.percent); // 0–100
 });
 ```
@@ -88,7 +88,7 @@ Once downloaded, all calls are instant and offline forever.
 | Female | F1, F2, F3, F4, F5 |
 
 ```ts
-const voices = await SpeechKit.getVoices();
+const voices = await TTSKit.getVoices();
 // [{ id: 'F1', name: 'F1', gender: 'female', engine: 'supertonic' }, ...]
 ```
 
@@ -109,11 +109,11 @@ sample sentence for every one.
 | Vietnamese (`vi`) | | | | |
 
 ```ts
-import { SUPERTONIC_LANGUAGES } from 'react-native-speechkit';
+import { SUPERTONIC_LANGUAGES } from 'react-native-tts-kit';
 
-await SpeechKit.speak('こんにちは', { voice: 'F1', language: 'ja' });
-await SpeechKit.speak('Привет',     { voice: 'M2', language: 'ru' });
-await SpeechKit.speak('नमस्ते',      { voice: 'F3', language: 'hi' });
+await TTSKit.speak('こんにちは', { voice: 'F1', language: 'ja' });
+await TTSKit.speak('Привет',     { voice: 'M2', language: 'ru' });
+await TTSKit.speak('नमस्ते',      { voice: 'F3', language: 'hi' });
 ```
 
 Voices are language-agnostic — any voice can speak any language.
@@ -121,8 +121,8 @@ Voices are language-agnostic — any voice can speak any language.
 ### Engines
 
 ```ts
-SpeechKit.setEngine('supertonic'); // default — neural, on-device
-SpeechKit.setEngine('system');     // expo-speech fallback (robotic but free)
+TTSKit.setEngine('supertonic'); // default — neural, on-device
+TTSKit.setEngine('system');     // expo-speech fallback (robotic but free)
 ```
 
 | Engine | Status | Use when |
@@ -162,11 +162,11 @@ The only network activity this package performs is the initial model download fr
 ```
 your app
    ↓
-SpeechKit                        — public API ([src/index.ts](src/index.ts))
+TTSKit                        — public API ([src/index.ts](src/index.ts))
    ↓
 SupertonicEngine                 — JS wrapper, listens for native events
    ↓
-RNSpeechKitModule                — Expo Module bridge ([ios/](ios/), [android/](android/))
+RNTTSKitModule                — Expo Module bridge ([ios/](ios/), [android/](android/))
    ↓
 4 ONNX sessions                  — duration_predictor → text_encoder
                                    → vector_estimator (×8 denoising)
@@ -202,7 +202,7 @@ A 2-line ToS clause covers it. See [ATTRIBUTIONS.md](ATTRIBUTIONS.md) for boiler
 - **v1.0** — Android validation, benchmarks across 4+ devices, cleaner first-launch UX
 - **v1.1** — Voice cloning via [NeuTTS Air](https://huggingface.co/neuphonic/neutts-air) (3-sec sample → cloned voice)
 - **v1.2** — Cloud engine adapters (ElevenLabs, OpenAI, Cartesia) behind the same API
-- **v2.0** — `@speechkit/web` — same API in the browser, WASM/WebGPU
+- **v2.0** — `@ttskit/web` — same API in the browser, WASM/WebGPU
 
 ---
 

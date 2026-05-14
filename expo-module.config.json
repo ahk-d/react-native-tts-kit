@@ -1,9 +1,9 @@
 {
   "platforms": ["ios", "android"],
   "ios": {
-    "modules": ["RNSpeechKitModule"]
+    "modules": ["RNTTSKitModule"]
   },
   "android": {
-    "modules": ["expo.modules.speechkit.RNSpeechKitModule"]
+    "modules": ["expo.modules.ttskit.RNTTSKitModule"]
   }
 }

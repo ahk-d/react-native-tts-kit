@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import SpeechKit from 'react-native-speechkit';
+import TTSKit from 'react-native-tts-kit';
 
 const PROMPTS = {
   short: 'Hello world.',
@@ -34,7 +34,7 @@ export default function Benchmark() {
 
     if (engine === 'supertonic') {
       await new Promise<void>((resolve, reject) => {
-        const stream = SpeechKit.stream(text, { engine, voice: 'F1', language: 'en' });
+        const stream = TTSKit.stream(text, { engine, voice: 'F1', language: 'en' });
         stream.on('chunk', (pcm) => {
           if (firstAudioAt == null) {
             firstAudioAt = Date.now();
@@ -46,7 +46,7 @@ export default function Benchmark() {
         stream.on('error', (e) => reject(e));
       });
     } else {
-      await SpeechKit.speak(text, {
+      await TTSKit.speak(text, {
         engine,
         language: 'en',
         onStart: () => { firstAudioAt = Date.now(); },

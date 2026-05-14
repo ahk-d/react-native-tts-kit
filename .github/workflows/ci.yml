@@ -72,8 +72,8 @@ jobs:
         working-directory: example/ios
         run: |
           xcodebuild \
-            -workspace SpeechKitDemo.xcworkspace \
-            -scheme SpeechKitDemo \
+            -workspace TTSKitDemo.xcworkspace \
+            -scheme TTSKitDemo \
             -configuration Debug \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 15' \

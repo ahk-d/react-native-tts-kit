@@ -35,15 +35,15 @@ let activeEngineId: EngineId = 'supertonic';
 function getEngine(id: EngineId = activeEngineId): Engine {
   const engine = engines.get(id);
   if (!engine) {
-    throw new Error(`[speechkit] Engine "${id}" is not registered.`);
+    throw new Error(`[ttskit] Engine "${id}" is not registered.`);
   }
   return engine;
 }
 
-export const SpeechKit = {
+export const TTSKit = {
   setEngine(id: EngineId): void {
     if (!engines.has(id)) {
-      throw new Error(`[speechkit] Engine "${id}" is not registered.`);
+      throw new Error(`[ttskit] Engine "${id}" is not registered.`);
     }
     activeEngineId = id;
   },
@@ -71,7 +71,7 @@ export const SpeechKit = {
    * This is opt-in. The library default is still Supertonic everywhere — apps
    * that want graceful fallback should call this once at startup:
    *
-   *     SpeechKit.setEngine(SpeechKit.recommendEngine());
+   *     TTSKit.setEngine(TTSKit.recommendEngine());
    *
    * The detection is heuristic. For a hard guarantee, run a one-time benchmark
    * (synthesize a known short input, measure TTFA, persist the result) and
@@ -147,10 +147,10 @@ export const SpeechKit = {
   async cloneVoice(options: CloneOptions, engineId?: EngineId): Promise<ClonedVoice> {
     const engine = getEngine(engineId);
     if (!engine.cloneVoice) {
-      throw new Error(`[speechkit] Engine "${engine.id}" does not support voice cloning.`);
+      throw new Error(`[ttskit] Engine "${engine.id}" does not support voice cloning.`);
     }
     return engine.cloneVoice(options);
   },
 };
 
-export default SpeechKit;
+export default TTSKit;

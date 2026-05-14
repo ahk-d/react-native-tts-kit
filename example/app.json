@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "SpeechKit Demo",
-    "slug": "speechkit-demo",
+    "name": "TTSKit Demo",
+    "slug": "ttskit-demo",
     "version": "0.1.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "bundleIdentifier": "com.ahkd.speechkitdemo",
+      "bundleIdentifier": "com.ahkd.ttskitdemo",
       "supportsTablet": true,
       "infoPlist": {
         "UIBackgroundModes": [
@@ -15,7 +15,7 @@
       }
     },
     "android": {
-      "package": "com.ahkd.speechkitdemo"
+      "package": "com.ahkd.ttskitdemo"
     },
     "plugins": [
       "expo-asset"

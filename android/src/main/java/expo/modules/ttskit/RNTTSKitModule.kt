@@ -1,12 +1,12 @@
-package expo.modules.speechkit
+package expo.modules.ttskit
 
 import android.util.Base64
 import expo.modules.kotlin.Promise
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
-import expo.modules.speechkit.supertonic.AudioEngine
-import expo.modules.speechkit.supertonic.ModelLocator
-import expo.modules.speechkit.supertonic.SupertonicSession
+import expo.modules.ttskit.supertonic.AudioEngine
+import expo.modules.ttskit.supertonic.ModelLocator
+import expo.modules.ttskit.supertonic.SupertonicSession
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -14,14 +14,14 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-class RNSpeechKitModule : Module() {
+class RNTTSKitModule : Module() {
   private var session: SupertonicSession? = null
   private val audio = AudioEngine()
   private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
   private var prefetchJob: Job? = null
 
   override fun definition() = ModuleDefinition {
-    Name("RNSpeechKit")
+    Name("RNTTSKit")
 
     Events(
       "onPrefetchProgress",

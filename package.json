@@ -1,5 +1,5 @@
 {
-  "name": "react-native-speechkit",
+  "name": "react-native-tts-kit",
   "version": "0.1.0",
   "description": "On-device neural TTS for React Native and Expo. Multi-engine, sub-second TTFA, 31 languages, fully offline.",
   "main": "build/index.js",
@@ -19,23 +19,29 @@
     "tts",
     "text-to-speech",
     "speech",
+    "speech-synthesis",
     "supertonic",
     "neural-tts",
     "on-device",
     "offline",
+    "offline-first",
     "voice",
-    "ai"
+    "ai",
+    "onnx",
+    "onnxruntime",
+    "ios",
+    "android"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ahk-d/react-native-speechkit"
+    "url": "https://github.com/ahk-d/react-native-tts-kit"
   },
   "bugs": {
-    "url": "https://github.com/ahk-d/react-native-speechkit/issues"
+    "url": "https://github.com/ahk-d/react-native-tts-kit/issues"
   },
   "author": "ahk-d",
   "license": "MIT",
-  "homepage": "https://github.com/ahk-d/react-native-speechkit#readme",
+  "homepage": "https://github.com/ahk-d/react-native-tts-kit",
   "files": [
     "build",
     "src",
@@ -43,7 +49,7 @@
     "android",
     "licenses",
     "expo-module.config.json",
-    "RNSpeechKit.podspec",
+    "RNTTSKit.podspec",
     "ATTRIBUTIONS.md",
     "LICENSE",
     "README.md"

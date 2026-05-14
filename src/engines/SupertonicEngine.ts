@@ -34,7 +34,7 @@ type ChunkPayload = { id: string; pcm: string };
 type IdPayload = { id: string };
 type ErrorPayload = { id: string; message: string };
 
-interface SpeechKitNative {
+interface TTSKitNative {
   isAvailable(): Promise<boolean>;
   prefetch(): Promise<void>;
   speak(
@@ -60,10 +60,10 @@ interface SpeechKitNative {
   addListener(name: string, listener: (event: any) => void): Subscription;
 }
 
-let nativeModule: SpeechKitNative | null = null;
-function getNative(): SpeechKitNative {
+let nativeModule: TTSKitNative | null = null;
+function getNative(): TTSKitNative {
   if (!nativeModule) {
-    nativeModule = requireNativeModule<SpeechKitNative>('RNSpeechKit');
+    nativeModule = requireNativeModule<TTSKitNative>('RNTTSKit');
   }
   return nativeModule;
 }
@@ -100,7 +100,7 @@ function decodeBase64(b64: string): Uint8Array {
 function resolveLang(options: SpeakOptions): string {
   const lang = options.language ?? DEFAULT_LANGUAGE;
   if (!SUPERTONIC_LANGUAGES.includes(lang)) {
-    throw new Error(`[speechkit] Unsupported language for Supertonic: ${lang}`);
+    throw new Error(`[ttskit] Unsupported language for Supertonic: ${lang}`);
   }
   return lang;
 }
@@ -141,7 +141,7 @@ export class SupertonicEngine implements Engine {
 
   async speak(text: string, options: SpeakOptions = {}): Promise<void> {
     const voiceId = options.voice ?? DEFAULT_VOICE_ID;
-    if (!findVoice(voiceId)) throw new Error(`[speechkit] Unknown voice: ${voiceId}`);
+    if (!findVoice(voiceId)) throw new Error(`[ttskit] Unknown voice: ${voiceId}`);
     const lang = resolveLang(options);
     const id = newId();
     const native = getNative();
@@ -178,7 +178,7 @@ export class SupertonicEngine implements Engine {
 
   stream(text: string, options: SpeakOptions = {}): StreamHandle {
     const voiceId = options.voice ?? DEFAULT_VOICE_ID;
-    if (!findVoice(voiceId)) throw new Error(`[speechkit] Unknown voice: ${voiceId}`);
+    if (!findVoice(voiceId)) throw new Error(`[ttskit] Unknown voice: ${voiceId}`);
     const lang = resolveLang(options);
 
     const id = newId();

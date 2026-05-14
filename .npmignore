@@ -1,0 +1,46 @@
+# What npm should NOT ship even though package.json `files` allows it.
+# Without this, `files: ["android"]` pulls in android/build/ Gradle output,
+# adding ~2 MB of debug-build class files that consumers don't need.
+
+# Build outputs (consumers compile against source, not our debug binaries)
+android/build/
+android/.gradle/
+android/.cxx/
+android/local.properties
+ios/build/
+ios/Pods/
+
+# Example app — not part of the published package
+example/
+
+# Dev tooling
+benchmarks/
+tools/
+docs/
+
+# IDE + agent state
+.claude/
+.idea/
+.vscode/
+.expo/
+.expo-shared/
+*.iml
+*.xcworkspace
+*.xcuserstate
+
+# Python venv from tools/
+.venv/
+**/__pycache__/
+*.pyc
+
+# OS junk
+.DS_Store
+
+# CI / git artifacts
+.github/
+.gitignore
+.gitattributes
+
+# Coverage / test output
+coverage/
+*.log
