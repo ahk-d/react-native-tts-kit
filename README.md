@@ -14,7 +14,7 @@ await TTSKit.speak('Hello, world.');
 
 No API keys. No network. No robotic system voice.
 
-> **Status:** v0.1 alpha. iOS verified on iPhone (iOS 26+). Android scaffolded but not yet validated on a real device. Feedback via [GitHub issues](https://github.com/ahk-d/react-native-tts-kit/issues).
+> **Status:** v0.1 alpha. Verified on iPhone (iOS 26+) and Samsung A52 (Android 14). Synthesis is sub-second on iPhone and ~8s on the A52 — flagship Android (S22+, Pixel 8+) should land in the 2-3s range, benchmarks coming with v1.0. Feedback via [GitHub issues](https://github.com/ahk-d/react-native-tts-kit/issues).
 
 ---
 
