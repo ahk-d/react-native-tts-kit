@@ -7,16 +7,22 @@
     "start": "expo start --dev-client",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "prebuild": "expo prebuild --clean"
+    "prebuild": "expo prebuild --clean",
+    "postinstall": "patch-package"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "2.1.2",
     "expo": "~53.0.20",
     "expo-asset": "~11.1.7",
+    "expo-clipboard": "~7.1.5",
     "expo-constants": "~17.1.8",
     "expo-dev-client": "~5.2.4",
+    "expo-linking": "~7.1.7",
     "expo-modules-core": "~2.5.0",
+    "expo-share-intent": "^4.1.2",
     "expo-speech": "~13.1.0",
     "expo-status-bar": "~2.2.0",
+    "patch-package": "^8.0.1",
     "react": "19.0.0",
     "react-native": "0.79.5",
     "react-native-tts-kit": "^0.1.2"

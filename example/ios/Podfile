@@ -60,5 +60,60 @@ target 'TTSKitDemo' do
         end
       end
     end
+
+    # Xcode 16+ enforces stricter C++20 consteval rules that break the bundled
+    # `fmt` library used transitively by React Native 0.79 (via glog/folly).
+    # The defines must be written into the generated xcconfig files because
+    # CocoaPods regenerates those after `target.build_configurations` runs.
+    fmt_targets = ['fmt', 'glog', 'RCT-Folly']
+    fmt_defines = 'FMT_USE_CONSTEVAL=0 FMT_USE_NONTYPE_TEMPLATE_ARGS=0'
+
+    installer.pods_project.targets.each do |target|
+      next unless fmt_targets.include?(target.name)
+      target.build_configurations.each do |config|
+        existing = config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] || ['$(inherited)']
+        existing = [existing] unless existing.is_a?(Array)
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] =
+          (existing + ['FMT_USE_CONSTEVAL=0', 'FMT_USE_NONTYPE_TEMPLATE_ARGS=0']).uniq
+        config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++20'
+      end
+    end
+
+    # Patch generated xcconfig files directly — the in-memory build_settings
+    # change above doesn't always survive CocoaPods' xcconfig regeneration.
+    Dir.glob(File.join(installer.sandbox.target_support_files_root, '{fmt,glog,RCT-Folly}', '*.xcconfig')).each do |xcconfig|
+      contents = File.read(xcconfig)
+      next if contents.include?('FMT_USE_CONSTEVAL=0')
+      patched = contents.lines.map do |line|
+        if line.start_with?('GCC_PREPROCESSOR_DEFINITIONS')
+          line.chomp + " #{fmt_defines}\n"
+        else
+          line
+        end
+      end
+      unless patched.any? { |l| l.start_with?('GCC_PREPROCESSOR_DEFINITIONS') }
+        patched << "GCC_PREPROCESSOR_DEFINITIONS = $(inherited) #{fmt_defines}\n"
+      end
+      File.write(xcconfig, patched.join)
+    end
+
+    # `fmt`'s base.h unconditionally redefines FMT_USE_CONSTEVAL based on
+    # compiler detection — our -D flag is shadowed. Patch the header so the
+    # macro respects any external definition.
+    base_h = File.join(installer.sandbox.root, 'fmt', 'include', 'fmt', 'base.h')
+    if File.exist?(base_h)
+      File.chmod(0644, base_h)
+      contents = File.read(base_h)
+      sentinel = '// Detect consteval, C++20 constexpr extensions and std::is_constant_evaluated.'
+      guard = "// Detect consteval, C++20 constexpr extensions and std::is_constant_evaluated.\n#if !defined(FMT_USE_CONSTEVAL)"
+      unless contents.include?('#if !defined(FMT_USE_CONSTEVAL)')
+        contents = contents.sub(sentinel, guard)
+        contents = contents.sub(
+          "#endif\n#if FMT_USE_CONSTEVAL\n#  define FMT_CONSTEVAL consteval",
+          "#endif\n#endif // !defined(FMT_USE_CONSTEVAL)\n#if FMT_USE_CONSTEVAL\n#  define FMT_CONSTEVAL consteval"
+        )
+        File.write(base_h, contents)
+      end
+    end
   end
 end

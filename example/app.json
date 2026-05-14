@@ -4,6 +4,7 @@
     "slug": "ttskit-demo",
     "version": "0.1.0",
     "orientation": "portrait",
+    "scheme": "ttskit",
     "userInterfaceStyle": "automatic",
     "ios": {
       "bundleIdentifier": "com.ahkd.ttskitdemo",
@@ -15,16 +16,30 @@
       }
     },
     "android": {
-      "package": "com.ahkd.ttskitdemo"
+      "package": "com.ahkd.ttskitdemo",
+      "intentFilters": [
+        {
+          "action": "SEND",
+          "category": [
+            "DEFAULT"
+          ],
+          "data": [
+            {
+              "mimeType": "text/plain"
+            }
+          ]
+        }
+      ]
     },
     "plugins": [
-      "expo-asset"
+      "expo-asset",
+      "expo-share-intent"
     ],
     "extra": {
       "eas": {
         "projectId": "560683cf-7ac7-486c-a1af-dd26a5282117"
       }
     },
-    "owner": ""
+    "owner": "adlmai"
   }
 }
