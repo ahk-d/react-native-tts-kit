@@ -1,5 +1,9 @@
 # react-native-speechkit
 
+<p align="center">
+  <img src="docs/thumbnail.png" alt="react-native-speechkit — Neural TTS for React Native · On-device · 31 languages" width="1024">
+</p>
+
 **Neural text-to-speech for React Native and Expo. On-device. Sub-100ms. 31 languages.**
 
 ```ts

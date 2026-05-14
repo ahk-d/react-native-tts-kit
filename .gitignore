@@ -39,5 +39,7 @@ tools/__pycache__/
 .idea/
 .vscode/
 
-# Internal-only docs (marketing briefs, launch plans, drafts)
-docs/
+# Internal-only docs (marketing briefs, launch plans, drafts).
+# Ignore the brief, keep the rest of docs/ tracked (thumbnail, future
+# user-facing screenshots and diagrams).
+docs/LAUNCH_BRIEF.md
