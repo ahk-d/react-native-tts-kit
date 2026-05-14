@@ -14,7 +14,6 @@ import {
   ReaderItem,
   estimateSeconds,
   formatDuration,
-  loadItems,
   newItem,
   saveItems,
   titleFor,
@@ -22,21 +21,15 @@ import {
 } from './storage';
 
 type Props = {
+  items: ReaderItem[];
+  setItems: React.Dispatch<React.SetStateAction<ReaderItem[]>>;
+  loaded: boolean;
   incomingShare: { text: string; nonce: number } | null;
   onOpenItem: (item: ReaderItem) => void;
 };
 
-export default function Library({ incomingShare, onOpenItem }: Props) {
-  const [items, setItems] = useState<ReaderItem[]>([]);
-  const [loading, setLoading] = useState(true);
+export default function Library({ items, setItems, loaded, incomingShare, onOpenItem }: Props) {
   const [pasting, setPasting] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      setItems(await loadItems());
-      setLoading(false);
-    })();
-  }, []);
 
   // Persist a new item, dedupe, and open the reader on it. Same flow for both
   // share-sheet and paste — the only difference is the source tag.
@@ -50,7 +43,7 @@ export default function Library({ incomingShare, onOpenItem }: Props) {
       return next;
     });
     onOpenItem(item);
-  }, [onOpenItem]);
+  }, [onOpenItem, setItems]);
 
   // Honor incoming shares: stash the latest nonce in storage isn't worth the
   // complexity; rely on App's nonce-guard pattern. Just react when the prop
@@ -93,7 +86,7 @@ export default function Library({ incomingShare, onOpenItem }: Props) {
         <Text style={styles.brandSub}>{items.length > 0 ? `${items.length} saved` : 'on-device · offline'}</Text>
       </View>
 
-      {loading ? (
+      {!loaded ? (
         <View style={styles.center}>
           <ActivityIndicator color="#8a8a92" />
         </View>

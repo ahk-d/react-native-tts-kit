@@ -1,47 +1,76 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
+  Modal,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
-import TTSKit, { StreamHandle } from 'react-native-tts-kit';
-import { ReaderItem, splitSentences } from './storage';
+import TTSKit, { StreamHandle, Voice, SUPERTONIC_LANGUAGES } from 'react-native-tts-kit';
+import { ReaderItem, loadPrefs, savePrefs } from './storage';
 
 const SPEEDS = [1, 1.25, 1.5, 2] as const;
 type Speed = (typeof SPEEDS)[number];
 
-// 150 wpm at 1x is the engine's natural pace. Per-sentence duration falls out
-// of this — we tick the highlight forward on a timer rather than chunk events
-// because chunks don't map 1:1 to sentences (verified empirically).
-function estimateSentenceMs(sentence: string, speed: Speed): number {
-  const words = sentence.trim().split(/\s+/).filter(Boolean).length;
-  if (words === 0) return 200;
-  return Math.max(400, Math.round((words / 150) * 60_000 / speed));
-}
-
 type Props = {
   item: ReaderItem;
   onBack: () => void;
+  onUpdateItem: (id: string, patch: Partial<ReaderItem>) => void;
 };
 
 type Phase = 'idle' | 'checking' | 'needs-model' | 'downloading' | 'ready' | 'speaking';
 
-export default function Reader({ item, onBack }: Props) {
-  const sentences = useMemo(() => splitSentences(item.text), [item.text]);
-
+export default function Reader({ item, onBack, onUpdateItem }: Props) {
   const [phase, setPhase] = useState<Phase>('checking');
-  const [activeIdx, setActiveIdx] = useState(0);
   const [speed, setSpeed] = useState<Speed>(1);
   const [downloadPct, setDownloadPct] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
+  const [voices, setVoices] = useState<Voice[]>([]);
+  // Per-item voice/language wins; fall back to last-used prefs; finally to
+  // a sane default ('F1' / 'en') if neither exists. Resolved once the item
+  // mounts and again whenever it changes.
+  const [voiceId, setVoiceId] = useState<string>(item.voiceId ?? 'F1');
+  const [language, setLanguage] = useState<string>(item.language ?? 'en');
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
   const streamRef = useRef<StreamHandle | null>(null);
-  const tickRef = useRef<NodeJS.Timeout | null>(null);
-  const scrollRef = useRef<ScrollView>(null);
-  const sentencePositions = useRef<number[]>([]);
+
+  // Resolve voice/language on mount: item-specific value > last-used prefs.
+  // Also load the voice list so the settings sheet can render chips.
+  useEffect(() => {
+    (async () => {
+      try {
+        const list = await TTSKit.getVoices();
+        setVoices(list);
+      } catch {
+        // non-fatal — settings sheet just won't render voice chips
+      }
+      if (!item.voiceId || !item.language) {
+        const prefs = await loadPrefs();
+        if (!item.voiceId && prefs.voiceId) setVoiceId(prefs.voiceId);
+        if (!item.language && prefs.language) setLanguage(prefs.language);
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [item.id]);
+
+  // Persist the choice both on the item (so re-opening it picks the same
+  // settings) and as the global last-used prefs (so the next new item starts
+  // with the same defaults).
+  const pickVoice = (id: string) => {
+    setVoiceId(id);
+    onUpdateItem(item.id, { voiceId: id });
+    savePrefs({ voiceId: id, language }).catch(() => {});
+  };
+  const pickLanguage = (lang: string) => {
+    setLanguage(lang);
+    onUpdateItem(item.id, { language: lang });
+    savePrefs({ voiceId, language: lang }).catch(() => {});
+  };
 
   // Check model availability once on mount. The phase machine decides what the
   // Play button does (start download vs. start speaking).
@@ -61,44 +90,7 @@ export default function Reader({ item, onBack }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Advance highlighted sentence on a timer. Cheaper and more predictable than
-  // counting chunk events. End-of-stream snaps to the last sentence — that's
-  // the part that doesn't drift.
-  const startHighlightTicker = (startIdx: number) => {
-    clearTicker();
-    let i = startIdx;
-    setActiveIdx(i);
-    scrollToSentence(i);
-    const scheduleNext = () => {
-      const current = sentences[i];
-      if (!current) return;
-      const ms = estimateSentenceMs(current, speed);
-      tickRef.current = setTimeout(() => {
-        i += 1;
-        if (i >= sentences.length) return;
-        setActiveIdx(i);
-        scrollToSentence(i);
-        scheduleNext();
-      }, ms);
-    };
-    scheduleNext();
-  };
-
-  const clearTicker = () => {
-    if (tickRef.current) {
-      clearTimeout(tickRef.current);
-      tickRef.current = null;
-    }
-  };
-
-  const scrollToSentence = (idx: number) => {
-    const y = sentencePositions.current[idx];
-    if (y == null) return;
-    scrollRef.current?.scrollTo({ y: Math.max(0, y - 80), animated: true });
-  };
-
   const cancelStream = () => {
-    clearTicker();
     if (streamRef.current) {
       streamRef.current.cancel().catch(() => {});
       streamRef.current = null;
@@ -123,12 +115,11 @@ export default function Reader({ item, onBack }: Props) {
   const play = () => {
     if (phase !== 'ready') return;
     setError(null);
-    setActiveIdx(0);
     setPhase('speaking');
 
     let handle: StreamHandle;
     try {
-      handle = TTSKit.stream(item.text, { engine: 'supertonic' });
+      handle = TTSKit.stream(item.text, { engine: 'supertonic', voice: voiceId, language });
     } catch (e: any) {
       setError(e?.message ?? String(e));
       setPhase('ready');
@@ -136,22 +127,12 @@ export default function Reader({ item, onBack }: Props) {
     }
     streamRef.current = handle;
 
-    let started = false;
-    handle.on('chunk', () => {
-      if (!started) {
-        started = true;
-        startHighlightTicker(0);
-      }
-    });
     handle.on('end', () => {
-      clearTicker();
-      setActiveIdx(sentences.length - 1);
       setPhase('ready');
       streamRef.current = null;
     });
     handle.on('error', (e: Error) => {
       setError(e.message);
-      clearTicker();
       setPhase('ready');
       streamRef.current = null;
     });
@@ -164,19 +145,10 @@ export default function Reader({ item, onBack }: Props) {
 
   const cycleSpeed = () => {
     const i = SPEEDS.indexOf(speed);
-    const next = SPEEDS[(i + 1) % SPEEDS.length];
-    setSpeed(next);
-    // If currently speaking, the audio engine doesn't support live speed
-    // changes — we apply the new pace on the next play. Keep the ticker pace
-    // in sync so the highlight doesn't drift visibly.
-    if (phase === 'speaking') {
-      clearTicker();
-      startHighlightTicker(activeIdx);
-    }
+    setSpeed(SPEEDS[(i + 1) % SPEEDS.length]);
+    // Engine doesn't support live speed change — applies on next play.
   };
 
-  const total = sentences.length;
-  const progress = total > 0 ? (activeIdx + 1) / total : 0;
   const isSpeaking = phase === 'speaking';
 
   return (
@@ -189,40 +161,28 @@ export default function Reader({ item, onBack }: Props) {
         <Text style={styles.topTitle} numberOfLines={1}>
           {item.source === 'share' ? 'Shared' : item.source === 'paste' ? 'Pasted' : 'Saved'}
         </Text>
-        <View style={styles.iconBtn} />
+        <Pressable
+          onPress={() => setSettingsOpen(true)}
+          hitSlop={10}
+          style={({ pressed }) => [styles.iconBtn, pressed && styles.pressed]}
+        >
+          <Text style={styles.gearText}>⚙</Text>
+        </Pressable>
       </View>
 
       {/* Article */}
       <ScrollView
-        ref={scrollRef}
         contentContainerStyle={styles.article}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.body}>
-          {sentences.map((s, i) => (
-            <Text
-              key={i}
-              onLayout={(e) => {
-                sentencePositions.current[i] = e.nativeEvent.layout.y;
-              }}
-              style={i === activeIdx && isSpeaking ? styles.sentenceActive : styles.sentence}
-            >
-              {s}
-              {i < sentences.length - 1 ? ' ' : ''}
-            </Text>
-          ))}
-        </Text>
+        <Text style={styles.body}>{item.text}</Text>
       </ScrollView>
 
       {/* Player */}
       <View style={styles.player}>
-        <View style={styles.progressTrack}>
-          <View style={[styles.progressFill, { width: `${progress * 100}%` }]} />
-        </View>
-
         <View style={styles.playerRow}>
           <Text style={styles.progressText}>
-            {isSpeaking ? `${activeIdx + 1} / ${total}` : `${total} sentence${total === 1 ? '' : 's'}`}
+            {isSpeaking ? 'playing' : `${item.source}`}
           </Text>
 
           {phase === 'downloading' ? (
@@ -273,7 +233,90 @@ export default function Reader({ item, onBack }: Props) {
         )}
         {error && <Text style={styles.errorText}>{error}</Text>}
       </View>
+
+      <SettingsSheet
+        visible={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        voices={voices}
+        voiceId={voiceId}
+        language={language}
+        onPickVoice={pickVoice}
+        onPickLanguage={pickLanguage}
+      />
     </View>
+  );
+}
+
+function SettingsSheet({
+  visible,
+  onClose,
+  voices,
+  voiceId,
+  language,
+  onPickVoice,
+  onPickLanguage,
+}: {
+  visible: boolean;
+  onClose: () => void;
+  voices: Voice[];
+  voiceId: string;
+  language: string;
+  onPickVoice: (id: string) => void;
+  onPickLanguage: (lang: string) => void;
+}) {
+  return (
+    <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose}>
+      <Pressable style={styles.sheetBackdrop} onPress={onClose}>
+        {/* Inner pressable swallows taps so the sheet itself doesn't close */}
+        <Pressable style={styles.sheet} onPress={() => {}}>
+          <View style={styles.sheetHandle} />
+          <View style={styles.sheetHeader}>
+            <Text style={styles.sheetTitle}>Voice & language</Text>
+            <Pressable onPress={onClose} hitSlop={10}>
+              <Text style={styles.sheetClose}>Done</Text>
+            </Pressable>
+          </View>
+
+          <ScrollView contentContainerStyle={styles.sheetScroll} showsVerticalScrollIndicator={false}>
+            <Text style={styles.sheetLabel}>Voice</Text>
+            <View style={styles.chipWrap}>
+              {voices.map((v) => {
+                const active = v.id === voiceId;
+                return (
+                  <TouchableOpacity
+                    key={v.id}
+                    activeOpacity={0.7}
+                    onPress={() => onPickVoice(v.id)}
+                    style={[styles.chip, active && styles.chipActive]}
+                  >
+                    <Text style={[styles.chipText, active && styles.chipTextActive]}>
+                      {v.gender === 'female' ? '♀' : '♂'} {v.name}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+
+            <Text style={[styles.sheetLabel, { marginTop: 22 }]}>Language</Text>
+            <View style={styles.chipWrap}>
+              {SUPERTONIC_LANGUAGES.map((l) => {
+                const active = l === language;
+                return (
+                  <TouchableOpacity
+                    key={l}
+                    activeOpacity={0.7}
+                    onPress={() => onPickLanguage(l)}
+                    style={[styles.chip, active && styles.chipActive]}
+                  >
+                    <Text style={[styles.chipText, active && styles.chipTextActive]}>{l}</Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </ScrollView>
+        </Pressable>
+      </Pressable>
+    </Modal>
   );
 }
 
@@ -309,17 +352,16 @@ const styles = StyleSheet.create({
     borderRadius: 22,
   },
   iconBtnText: { color: theme.text, fontSize: 32, lineHeight: 32, marginTop: -4 },
+  gearText: { color: theme.text, fontSize: 22, lineHeight: 22 },
   topTitle: { color: theme.textDim, fontSize: 14, fontWeight: '500', flex: 1, textAlign: 'center' },
 
   article: { paddingHorizontal: 24, paddingTop: 12, paddingBottom: 220 },
   body: {
-    color: theme.bodyDim,
+    color: theme.text,
     fontSize: 19,
     lineHeight: 30,
     letterSpacing: -0.1,
   },
-  sentence: { color: theme.bodyDim },
-  sentenceActive: { color: theme.text, fontWeight: '500' },
 
   player: {
     position: 'absolute',
@@ -333,14 +375,6 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 38,
   },
-  progressTrack: {
-    height: 3,
-    backgroundColor: theme.border,
-    borderRadius: 1.5,
-    overflow: 'hidden',
-    marginBottom: 14,
-  },
-  progressFill: { height: 3, backgroundColor: theme.accent },
 
   playerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   progressText: {
@@ -384,4 +418,59 @@ const styles = StyleSheet.create({
     letterSpacing: 0.3,
   },
   errorText: { color: theme.bad, fontSize: 12, textAlign: 'center', marginTop: 10 },
+
+  sheetBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.55)',
+    justifyContent: 'flex-end',
+  },
+  sheet: {
+    backgroundColor: theme.bgElev,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    paddingTop: 8,
+    paddingBottom: 32,
+    maxHeight: '75%',
+  },
+  sheetHandle: {
+    width: 40,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: theme.border,
+    alignSelf: 'center',
+    marginBottom: 8,
+  },
+  sheetHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 22,
+    paddingVertical: 10,
+  },
+  sheetTitle: { color: theme.text, fontSize: 17, fontWeight: '600', letterSpacing: -0.2 },
+  sheetClose: { color: theme.accent, fontSize: 15, fontWeight: '600' },
+  sheetScroll: { paddingHorizontal: 22, paddingBottom: 16 },
+  sheetLabel: {
+    color: theme.textMuted,
+    fontSize: 11,
+    textTransform: 'uppercase',
+    letterSpacing: 1.2,
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+
+  chipWrap: { flexDirection: 'row', flexWrap: 'wrap' },
+  chip: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: theme.border,
+    backgroundColor: theme.bg,
+    marginRight: 6,
+    marginBottom: 6,
+  },
+  chipActive: { backgroundColor: theme.accent, borderColor: theme.accent },
+  chipText: { color: theme.text, fontSize: 13 },
+  chipTextActive: { color: '#fff', fontWeight: '600' },
 });

@@ -9,7 +9,30 @@ export type ReaderItem = {
   text: string;
   createdAt: number;
   source: ItemSource;
+  voiceId?: string;
+  language?: string;
 };
+
+const PREFS_KEY = '@ttskit/reader/prefs/v1';
+export type ReaderPrefs = {
+  voiceId?: string;
+  language?: string;
+};
+
+export async function loadPrefs(): Promise<ReaderPrefs> {
+  try {
+    const raw = await AsyncStorage.getItem(PREFS_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return typeof parsed === 'object' && parsed !== null ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+export async function savePrefs(prefs: ReaderPrefs): Promise<void> {
+  await AsyncStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
+}
 
 export async function loadItems(): Promise<ReaderItem[]> {
   try {
@@ -40,6 +63,10 @@ export function newItem(text: string, source: ItemSource): ReaderItem {
 export function upsertOnTop(items: ReaderItem[], item: ReaderItem): ReaderItem[] {
   const filtered = items.filter((i) => i.text !== item.text);
   return [item, ...filtered];
+}
+
+export function patchItem(items: ReaderItem[], id: string, patch: Partial<ReaderItem>): ReaderItem[] {
+  return items.map((i) => (i.id === id ? { ...i, ...patch } : i));
 }
 
 // Reading-time helpers. Average TTS speed at 1x ≈ 150 wpm — coarse but stable.
