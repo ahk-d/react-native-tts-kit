@@ -19,6 +19,12 @@
     },
     "plugins": [
       "expo-asset"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "560683cf-7ac7-486c-a1af-dd26a5282117"
+      }
+    },
+    "owner": "adlmai"
   }
 }
